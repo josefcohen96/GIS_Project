@@ -5,135 +5,145 @@
 	<title>Party Locations</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 	<style>
-		html,
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
 
+#map {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
 
-		#map {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
+#sidebar {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	background-color: #fff;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+}
 
-		#sidebar {
-			position: absolute;
-			bottom: 10px;
-			left: 10px;
-			background-color: white;
-			padding: 10px;
-			border-radius: 5px;
-			background-color: rgba(255, 255, 255, 0.3);
-		}
+#sidebar p {
+	margin: 0;
+	padding: 0;
+	margin-bottom: 5px;
+}
 
-		.green-marker {
-			display: inline-block;
-			width: 12px;
-			height: 12px;
-			background-color: green;
-			margin-right: 5px;
-		}
+.green-marker {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background-color: green;
+	margin-right: 5px;
+}
 
-		.orange-marker {
-			display: inline-block;
-			width: 12px;
-			height: 12px;
-			background-color: orange;
-			margin-right: 5px;
-		}
+.orange-marker {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background-color: orange;
+	margin-right: 5px;
+}
 
-		.red-marker {
-			display: inline-block;
-			width: 12px;
-			height: 12px;
-			background-color: red;
-			margin-right: 5px;
-		}
+.red-marker {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background-color: red;
+	margin-right: 5px;
+}
 
-		.marker-icon {
-			width: 25px;
-			height: 41px;
-			margin-top: -20px;
-			margin-left: -12px;
-		}
+.marker-icon {
+	width: 25px;
+	height: 41px;
+	margin-top: -20px;
+	margin-left: -12px;
+}
 
-		.red {
-			background-color: red;
-		}
+.red {
+	background-color: red;
+}
 
-		.blue {
-			background-color: blue;
-		}
+.blue {
+	background-color: blue;
+}
 
-		.container {
-			position: absolute;
-			bottom: 10px;
-			right: 10px;
-			z-index: 1000;
-			background-color: rgba(255, 255, 255, 0.3);
-			padding: 10px;
-			border-radius: 4px;
-		}
+.container {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	z-index: 1000;
+	background-color: rgba(255, 255, 255, 0.9);
+	padding: 10px;
+	border-radius: 4px;
+}
 
-		.button-container {
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: 10px;
-		}
+.button-container {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
 
-		.button-container button {
-			padding: 10px 20px;
-			font-size: 16px;
-			background-color: #4caf50;
-			color: white;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-		}
+.button-container button {
+	padding: 10px 20px;
+	font-size: 16px;
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
 
-		.search-bar {
-			display: flex;
-			align-items: center;
-			margin-bottom: 10px;
-		}
+.search-bar {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
 
-		.search-bar input[type="text"] {
-			padding: 10px;
-			font-size: 16px;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-		}
+.search-bar input[type="text"] {
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
 
-		.search-bar button {
-			padding: 10px 20px;
-			font-size: 16px;
-			background-color: #2196f3;
-			color: white;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-			margin-left: 5px;
-		}
+.search-bar button {
+	padding: 10px 20px;
+	font-size: 16px;
+	background-color: #2196f3;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-left: 5px;
+}
 
-		monthSelect {
-			appearance: none;
-			-webkit-appearance: none;
-			padding: 10px;
-			font-size: 16px;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-			width: 100%;
-			background-color: #fff;
-			background-image: url('path/to/down-arrow-icon.png');
-			background-repeat: no-repeat;
-			background-position: right center;
-		}
+.monthSelect {
+	appearance: none;
+	-webkit-appearance: none;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	width: 100%;
+	background-color: #fff;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
 
-		/* Style the dropdown arrow */
-		#monthSelect::-ms-expand {
-			display: none;
-		}
+/* Style the dropdown arrow */
+#monthSelect::-ms-expand {
+	display: none;
+}
 	</style>
 </head>
 
