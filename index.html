@@ -17,18 +17,6 @@
 			z-index: 0;
 		}
 
-		#mapWindow {
-			position: absolute;
-			top: 100px;
-			/* Adjust the top position as needed */
-			left: 10px;
-			/* Adjust the left position as needed */
-			z-index: 1;
-			background-color: #fff;
-			padding: 10px;
-			border-radius: 5px;
-		}
-
 		.marker-icon {
 			width: 25px;
 			height: 41px;
@@ -43,36 +31,119 @@
 		.blue {
 			background-color: blue;
 		}
+
+		.container {
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+			z-index: 1000;
+			background-color: rgba(255, 255, 255, 0.3);
+			padding: 10px;
+			border-radius: 4px;
+		}
+
+		.button-container {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 10px;
+		}
+
+		.button-container button {
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: #4caf50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		.search-bar {
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+
+		.search-bar input[type="text"] {
+			padding: 10px;
+			font-size: 16px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		.search-bar button {
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: #2196f3;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			margin-left: 5px;
+		}
+
+		monthSelect {
+			appearance: none;
+			-webkit-appearance: none;
+			padding: 10px;
+			font-size: 16px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			width: 100%;
+			background-color: #fff;
+			background-image: url('path/to/down-arrow-icon.png');
+			background-repeat: no-repeat;
+			background-position: right center;
+		}
+
+		/* Style the dropdown arrow */
+		#monthSelect::-ms-expand {
+			display: none;
+		}
 	</style>
 </head>
 
 <body>
+
+
+	<button onclick="search()">Search</button>
+	</div>
 	<div id="map"></div>
 	<div id="mapWindow">
 		<div id="menu">
-			<h3>Search Events</h3>
-			<select id="monthSelect">
-				<option value="">All Months</option>
-				<option value="01">January</option>
-				<option value="02">February</option>
-				<option value="03">March</option>
-				<option value="04">April</option>
-				<option value="05">May</option>
-				<option value="06">June</option>
-				<option value="07">July</option>
-				<option value="08">August</option>
-				<option value="09">September</option>
-				<option value="10">October</option>
-				<option value="11">November</option>
-				<option value="12">December</option>
-			</select>
-			<button onclick="searchByMonth()">Search</button>
+			<div class="container">
+				<select id="monthSelect">
+					<option value="">All Months</option>
+					<option value="01">January</option>
+					<option value="02">February</option>
+					<option value="03">March</option>
+					<option value="04">April</option>
+					<option value="05">May</option>
+					<option value="06">June</option>
+					<option value="07">July</option>
+					<option value="08">August</option>
+					<option value="09">September</option>
+					<option value="10">October</option>
+					<option value="11">November</option>
+					<option value="12">December</option>
+				</select>
+				<div class="search-bar">
+					<input type="text" id="search-input" placeholder="Search">
+					<button onclick="searchByMonth()">Search</button>
+				</div>
+				<div class="button-container">
+
+					<button onclick="getCurrentLocation()">Get My Location</button>
+					<button id="removeMarkerButton" onclick="removeTemporaryMarker()">Remove Marker</button>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
-
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 	<script>
+
 		const parties =
 			[
 				{
@@ -450,6 +521,7 @@
 				}
 			]
 
+		let temporaryMarker;
 
 		function createMarkers() {
 			parties.forEach(party => {
@@ -461,6 +533,9 @@
 						popupAnchor: [1, -34],
 						shadowSize: [41, 41]
 					})
+				});
+				marker.on('click', function () {
+					// Perform the desired action when the marker is clicked
 				});
 
 				const duration = (new Date(party.end_time) - new Date(party.start_time)) / 3600000; // Duration in hours
@@ -479,7 +554,15 @@
 					}));
 			});
 		}
-
+		function removeTemporaryMarker() {
+			// Check if the temporary marker exists
+			if (temporaryMarker) {
+				// Remove the marker from the map
+				map.removeLayer(temporaryMarker);
+				// Set the temporary marker variable to null
+				temporaryMarker = null;
+			}
+		}
 		function getColor(duration) {
 			if (duration <= 6) {
 				return 'green';
@@ -515,6 +598,29 @@
 
 			displayParties(filteredParties);
 		}
+		function getCurrentLocation() {
+			if ("geolocation" in navigator) {
+				navigator.geolocation.getCurrentPosition(
+					function (position) {
+						const latitude = position.coords.latitude;
+						const longitude = position.coords.longitude;
+
+						map.setView([latitude, longitude], 12);
+
+						if (temporaryMarker) {
+							map.removeLayer(temporaryMarker);
+						}
+
+						temporaryMarker = L.marker([latitude, longitude]).addTo(map);
+					},
+					function (error) {
+						console.log("Error getting geolocation:", error);
+					}
+				);
+			} else {
+				console.log("Geolocation is not supported");
+			}
+		}
 
 		function displayParties(parties) {
 			clearMarkers();
@@ -544,7 +650,8 @@
 				party.marker = marker; // Assign the marker to the party object
 
 				marker.addTo(map)
-					.bindPopup(`<b>${party.name}</b><br>${party.start_time} - ${party.end_time}`)
+					.bindPopup(`<h3>${party.name}</h3><p>Date: ${party.date}</p><p>Start Time: ${party.start_time}</p><p>End Time: ${party.end_time}</p>
+      `)
 					.setIcon(L.icon({
 						iconUrl: `https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
 						iconSize: [25, 41],
@@ -556,10 +663,10 @@
 		}
 
 		// Initialize the map
-		const map = L.map('map').setView([37.7749, -122.4194], 13);
+		const map = L.map('map').setView([36.5200, 8.4050], 3);
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-			maxZoom: 18
+			maxZoom: 9
 		}).addTo(map);
 
 		createMarkers();
