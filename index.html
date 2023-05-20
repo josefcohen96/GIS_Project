@@ -17,6 +17,40 @@
 			z-index: 0;
 		}
 
+		#sidebar {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			background-color: white;
+			padding: 10px;
+			border-radius: 5px;
+			background-color: rgba(255, 255, 255, 0.3);
+		}
+
+		.green-marker {
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			background-color: green;
+			margin-right: 5px;
+		}
+
+		.orange-marker {
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			background-color: orange;
+			margin-right: 5px;
+		}
+
+		.red-marker {
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			background-color: red;
+			margin-right: 5px;
+		}
+
 		.marker-icon {
 			width: 25px;
 			height: 41px;
@@ -107,8 +141,15 @@
 
 
 	<button onclick="search()">Search</button>
-	</div>
 	<div id="map"></div>
+	<div id="sidebar">
+		<h3>Map Reading Instructions</h3>
+		<ul>
+			<li><span class="green-marker"></span> Less than a day</li>
+			<li><span class="orange-marker"></span> Between one and two days</li>
+			<li><span class="red-marker"></span> Over two days</li>
+		</ul>
+	</div>
 	<div id="mapWindow">
 		<div id="menu">
 			<div class="container">
@@ -147,376 +188,518 @@
 		const parties =
 			[
 				{
-					"name": "Party 1",
+					"name": "Tomorrowland",
 					"coordinates": {
-						"latitude": 36.5200,
-						"longitude": 8.4050
+						"latitude": 51.0911,
+						"longitude": 4.3663
 					},
-					"start_time": "2023-01-05 19:00",
-					"end_time": "2023-03-05 01:00",
-					"date": "2023-01-05",
+					"start_time": "2023-07-21 12:00",
+					"end_time": "2023-07-24 23:59",
+					"date": "2023-07-21",
 					"marker": null
 				},
 				{
-					"name": "Party 2",
+					"name": "Sziget Festival",
 					"coordinates": {
-						"latitude": 34.0522,
-						"longitude": 118.2437
+						"latitude": 47.5181,
+						"longitude": 19.0736
 					},
-					"start_time": "2023-02-14 20:00",
-					"end_time": "2023-02-15 02:00",
-					"date": "2023-02-14",
+					"start_time": "2023-08-09 14:00",
+					"end_time": "2023-08-16 04:00",
+					"date": "2023-08-09",
 					"marker": null
 				},
 				{
-					"name": "Party 3",
+					"name": "Ozora Festival",
 					"coordinates": {
-						"latitude": 51.5074,
-						"longitude": 0.1278
+						"latitude": 46.6694,
+						"longitude": 18.3315
 					},
-					"start_time": "2023-03-22 21:00",
-					"end_time": "2023-03-23 03:00",
-					"date": "2023-03-22",
+					"start_time": "2023-08-16 18:00",
+					"end_time": "2023-08-22 12:00",
+					"date": "2023-08-16",
 					"marker": null
 				},
 				{
-					"name": "Party 4",
+					"name": "Ultra Europe",
 					"coordinates": {
-						"latitude": 37.7749,
-						"longitude": 122.4194
+						"latitude": 43.5115,
+						"longitude": 16.4467
 					},
-					"start_time": "2023-04-07 18:00",
-					"end_time": "2023-04-08 00:00",
-					"date": "2023-04-07",
+					"start_time": "2023-07-14 16:00",
+					"end_time": "2023-07-16 04:00",
+					"date": "2023-07-14",
 					"marker": null
 				},
 				{
-					"name": "Party 5",
+					"name": "BaliSpirit Festival",
 					"coordinates": {
-						"latitude": 51.5074,
-						"longitude": 0.1278
+						"latitude": -8.5211,
+						"longitude": 115.2540
 					},
-					"start_time": "2023-05-10 22:00",
-					"end_time": "2023-05-11 04:00",
-					"date": "2023-05-10",
+					"start_time": "2023-03-19 09:00",
+					"end_time": "2023-03-26 21:00",
+					"date": "2023-03-19",
 					"marker": null
 				},
 				{
-					"name": "Party 6",
+					"name": "Wonderfruit Festival",
 					"coordinates": {
-						"latitude": 40.7128,
-						"longitude": 74.0060
+						"latitude": 12.9649,
+						"longitude": 100.9168
 					},
-					"start_time": "2023-06-18 19:30",
-					"end_time": "2023-06-19 01:30",
-					"date": "2023-06-18",
+					"start_time": "2023-12-14 14:00",
+					"end_time": "2023-12-17 02:00",
+					"date": "2023-12-14",
 					"marker": null
 				},
 				{
-					"name": "Party 7",
+					"name": "Sunburn Festival",
 					"coordinates": {
-						"latitude": 34.0522,
-						"longitude": 118.2437
+						"latitude": 15.2993,
+						"longitude": 74.1240
 					},
-					"start_time": "2023-07-25 20:30",
-					"end_time": "2023-07-26 02:30",
-					"date": "2023-07-25",
+					"start_time": "2023-12-27 18:00",
+					"end_time": "2024-01-01 06:00",
+					"date": "2023-12-27",
 					"marker": null
 				},
 				{
-					"name": "Party 8",
+					"name": "Rock in Rio",
 					"coordinates": {
-						"latitude": 37.7749,
-						"longitude": 122.4194
+						"latitude": -22.9035,
+						"longitude": -43.2096
 					},
-					"start_time": "2023-08-08 17:30",
-					"end_time": "2023-08-09 00:30",
-					"date": "2023-08-08",
+					"start_time": "2023-09-15 14:00",
+					"end_time": "2023-09-24 23:59",
+					"date": "2023-09-15",
 					"marker": null
 				},
 				{
-					"name": "Party 9",
+					"name": "Lollapalooza Argentina",
 					"coordinates": {
-						"latitude": 51.5074,
-						"longitude": -0.1278
+						"latitude": -34.6108,
+						"longitude": -58.3717
 					},
-					"start_time": "2023-09-14 21:00",
-					"end_time": "2023-08-09 00:30",
-					"date": "2023-08-08",
+					"start_time": "2023-03-17 12:00",
+					"end_time": "2023-03-19 04:00",
+					"date": "2023-03-17",
 					"marker": null
 				},
 				{
-					"name": "Party 10",
+					"name": "Ultra Brasil",
 					"coordinates": {
-						"latitude": 52.5200,
-						"longitude": 13.4050
+						"latitude": -22.9056,
+						"longitude": -43.1912
 					},
-					"start_time": "2023-10-11 18:00",
-					"end_time": "2023-10-12 02:00",
-					"date": "2023-10-11",
+					"start_time": "2023-10-12 16:00",
+					"end_time": "2023-10-14 04:00",
+					"date": "2023-10-12",
 					"marker": null
 				},
 				{
-					"name": "Party 11",
+					"name": "Villa Cariño Festival",
 					"coordinates": {
-						"latitude": 48.8566,
-						"longitude": 2.3522
+						"latitude": -33.4489,
+						"longitude": -70.6693
 					},
-					"start_time": "2023-11-13 21:00",
-					"end_time": "2023-11-14 03:00",
-					"date": "2023-11-13",
+					"start_time": "2023-06-10 13:00",
+					"end_time": "2023-06-11 01:00",
+					"date": "2023-06-10",
 					"marker": null
 				},
 				{
-					"name": "Party 12",
+					"name": "Creamfields Chile",
 					"coordinates": {
-						"latitude": 37.7749,
-						"longitude": -122.4194
+						"latitude": -33.4362,
+						"longitude": -70.6341
 					},
-					"start_time": "2023-12-10 20:00",
-					"end_time": "2023-12-11 02:00",
-					"date": "2023-12-10",
+					"start_time": "2023-11-11 20:00",
+					"end_time": "2023-11-12 05:00",
+					"date": "2023-11-11",
 					"marker": null
 				},
 				{
-					"name": "Party 13",
+					"name": "Coachella",
 					"coordinates": {
-						"latitude": 51.5074,
-						"longitude": -0.1278
+						"latitude": 33.6804,
+						"longitude": -116.2378
 					},
-					"start_time": "2024-01-12 19:30",
-					"end_time": "2024-01-13 01:30",
-					"date": "2024-01-12",
+					"start_time": "2023-04-14 12:00",
+					"end_time": "2023-04-23 23:59",
+					"date": "2023-04-14",
 					"marker": null
 				},
 				{
-					"name": "Party 14",
+					"name": "EDC Las Vegas",
 					"coordinates": {
-						"latitude": 34.0522,
-						"longitude": -118.2437
+						"latitude": 36.2712,
+						"longitude": -115.0126
 					},
-					"start_time": "2024-02-14 20:30",
-					"end_time": "2024-02-15 02:30",
-					"date": "2024-02-14",
+					"start_time": "2023-05-19 18:00",
+					"end_time": "2023-05-21 06:00",
+					"date": "2023-05-19",
 					"marker": null
 				},
 				{
-					"name": "Party 15",
+					"name": "Bonnaroo Music Festival",
 					"coordinates": {
-						"latitude": 40.7128,
-						"longitude": -74.0060
+						"latitude": 35.4819,
+						"longitude": -86.0846
 					},
-					"start_time": "2024-03-10 18:30",
-					"end_time": "2024-03-11 00:30",
-					"date": "2024-03-10",
+					"start_time": "2023-06-08 14:00",
+					"end_time": "2023-06-11 04:00",
+					"date": "2023-06-08",
 					"marker": null
 				},
 				{
-					"name": "Party 16",
+					"name": "Electric Zoo",
 					"coordinates": {
-						"latitude": 51.5074,
-						"longitude": -0.1278
+						"latitude": 40.7947,
+						"longitude": -73.9224
 					},
-					"start_time": "2024-04-15 21:00",
-					"end_time": "2024-04-16 03:00",
-					"date": "2024-04-15",
+					"start_time": "2023-08-31 16:00",
+					"end_time": "2023-09-03 04:00",
+					"date": "2023-08-31",
 					"marker": null
 				},
 				{
-					"name": "Party 17",
+					"name": "Tel Aviv Music Festival",
 					"coordinates": {
-						"latitude": 34.0522,
-						"longitude": -118.2437
+						"latitude": 32.0853,
+						"longitude": 34.7818
 					},
-					"start_time": "2024-05-12 20:00",
-					"end_time": "2024-05-13 02:00",
-					"date": "2024-05-12",
+					"start_time": "2023-07-15 20:00",
+					"end_time": "2023-07-16 03:00",
+					"date": "2023-07-15",
 					"marker": null
 				},
 				{
-					"name": "Party 18",
+					"name": "Jerusalem Jazz Festival",
 					"coordinates": {
-						"latitude": 37.7749,
-						"longitude": -122.4194
+						"latitude": 31.7683,
+						"longitude": 35.2137
 					},
-					"start_time": "2024-06-22 19:30",
-					"end_time": "2024-06-23 01:30",
-					"date": "2024-06-22",
+					"start_time": "2023-09-22 18:00",
+					"end_time": "2023-09-24 02:00",
+					"date": "2023-09-22",
 					"marker": null
 				},
 				{
-					"name": "Party 19",
+					"name": "Haifa Electronic Music Festival",
 					"coordinates": {
-						"latitude": 48.8566,
-						"longitude": 2.3522
+						"latitude": 32.7940,
+						"longitude": 34.9896
 					},
-					"start_time": "2024-07-19 20:30",
-					"end_time": "2024-07-20 02:30",
-					"date": "2024-07-19",
+					"start_time": "2023-10-28 22:00",
+					"end_time": "2023-10-29 06:00",
+					"date": "2023-10-28",
 					"marker": null
 				},
 				{
-					"name": "Party A",
+					"name": "Eilat Reggae Festival",
 					"coordinates": {
-						"latitude": 48.8566,
-						"longitude": 2.3522
+						"latitude": 29.5580,
+						"longitude": 34.9482
 					},
-					"start_time": "2023-08-05T21:00:00Z",
-					"end_time": "2023-08-06T03:00:00Z",
-					"date": "2023-08-05",
+					"start_time": "2023-11-17 16:00",
+					"end_time": "2023-11-19 02:00",
+					"date": "2023-11-17",
 					"marker": null
 				},
 				{
-					"name": "Party B",
-					"coordinates": {
-						"latitude": 41.9028,
-						"longitude": 12.4964
-					},
-					"start_time": "2023-08-10T22:00:00Z",
-					"end_time": "2023-08-11T04:00:00Z",
-					"date": "2023-08-10",
-					"marker": null
-				},
-				{
-					"name": "Party C",
-					"coordinates": {
-						"latitude": 43.7034,
-						"longitude": 7.2663
-					},
-					"start_time": "2023-08-15T20:30:00Z",
-					"end_time": "2023-08-16T02:30:00Z",
-					"date": "2023-08-15",
-					"marker": null
-				},
-				{
-					"name": "Party D",
-					"coordinates": {
-						"latitude": 41.9028,
-						"longitude": 12.4964
-					},
-					"start_time": "2023-11-03T23:00:00Z",
-					"end_time": "2023-11-04T05:00:00Z",
-					"date": "2023-11-03",
-					"marker": null
-				},
-				{
-					"name": "Party E",
-					"coordinates": {
-						"latitude": 43.7034,
-						"longitude": 7.2663
-					},
-					"start_time": "2023-11-08T21:30:00Z",
-					"end_time": "2023-11-09T03:30:00Z",
-					"date": "2023-11-08",
-					"marker": null
-				}, {
-					"name": "Party F",
-					"coordinates": {
-						"latitude": -26.2041,
-						"longitude": 28.0473
-					},
-					"start_time": "2023-10-07T19:00:00Z",
-					"end_time": "2023-10-08T02:00:00Z",
-					"date": "2023-10-07",
-					"marker": null
-				},
-				{
-					"name": "Party G",
+					"name": "Cape Town Jazz Festival",
 					"coordinates": {
 						"latitude": -33.9249,
 						"longitude": 18.4241
 					},
-					"start_time": "2023-10-14T21:00:00Z",
-					"end_time": "2023-10-15T03:00:00Z",
-					"date": "2023-10-14",
+					"start_time": "2023-08-10 19:30",
+					"end_time": "2023-08-12 01:00",
+					"date": "2023-08-10",
 					"marker": null
 				},
 				{
-					"name": "Party H",
+					"name": "Marrakech Music Festival",
 					"coordinates": {
-						"latitude": -1.2921,
-						"longitude": 36.8219
+						"latitude": 31.6295,
+						"longitude": -7.9811
 					},
-					"start_time": "2023-12-02T22:30:00Z",
-					"end_time": "2023-12-03T04:30:00Z",
-					"date": "2023-12-02",
+					"start_time": "2023-09-15 20:00",
+					"end_time": "2023-09-16 02:00",
+					"date": "2023-09-15",
 					"marker": null
 				},
 				{
-					"name": "Party I",
+					"name": "Cairo Electro Carnival",
 					"coordinates": {
-						"latitude": -26.2041,
-						"longitude": 28.0473
+						"latitude": 30.0444,
+						"longitude": 31.2357
 					},
+					"start_time": "2023-10-20 22:00",
+					"end_time": "2023-10-21 04:00",
+					"date": "2023-10-20",
+					"marker": null
+				},
+				{
+					"name": "Lagos Afrobeats Festival",
+					"coordinates": {
+						"latitude": 6.5244,
+						"longitude": 3.3792
+					},
+					"start_time": "2023-11-25 18:00",
+					"end_time": "2023-11-26 02:00",
+					"date": "2023-11-25",
+					"marker": null
+				},
+				{
+					"name": "Nairobi Reggae Splash",
+					"coordinates": {
+						"latitude": -1.2864,
+						"longitude": 36.8172
+					},
+					"start_time": "2023-12-10 15:00",
+					"end_time": "2023-12-11 01:00",
+					"date": "2023-12-10",
+					"marker": null
+				},
+				{
+					"name": "Moscow International Music Festival",
+					"coordinates": {
+						"latitude": 55.7512,
+						"longitude": 37.6184
+					},
+					"start_time": "2023-07-05 18:30",
+					"end_time": "2023-07-08 01:00",
+					"date": "2023-07-05",
+					"marker": null
+				},
+				{
+					"name": "St. Petersburg Rock Fest",
+					"coordinates": {
+						"latitude": 59.9343,
+						"longitude": 30.3351
+					},
+					"start_time": "2023-09-20 19:00",
+					"end_time": "2023-09-22 02:00",
+					"date": "2023-09-20",
+					"marker": null
+				},
+				{
+					"name": "Kazan Electronic Music Festival",
+					"coordinates": {
+						"latitude": 55.8304,
+						"longitude": 49.0661
+					},
+					"start_time": "2023-10-15 22:00",
+					"end_time": "2023-10-16 06:00",
+					"date": "2023-10-15",
+					"marker": null
+				},
+				{
+					"name": "Dead Sea Rave",
+					"coordinates": {
+						"latitude": 31.7180,
+						"longitude": 35.3613
+					},
+					"start_time": "2023-12-31 22:00",
+					"end_time": "2024-01-01 07:00",
+					"date": "2023-12-31",
+					"marker": null
+				},
+				{
+					"name": "Austin City Limits",
+					"coordinates": {
+						"latitude": 30.2500,
+						"longitude": -97.7500
+					},
+					"start_time": "2023-10-06 12:00",
+					"end_time": "2023-10-15 23:59",
+					"date": "2023-10-06",
+					"marker": null
+				},
+				{
+					"name": "EXIT Festival",
+					"coordinates": {
+						"latitude": 45.2539,
+						"longitude": 19.8447
+					},
+					"start_time": "2023-07-06 19:00",
+					"end_time": "2023-07-09 05:00",
+					"date": "2023-07-06",
+					"marker": null
+				},
+
+				{
 					"start_time": "2023-12-09T20:00:00Z",
 					"end_time": "2023-12-10T02:00:00Z",
 					"date": "2023-12-09",
 					"marker": null
 				},
 				{
-					"name": "Party J",
+					"name": "Tomorrowland",
 					"coordinates": {
-						"latitude": -33.9249,
-						"longitude": 18.4241
+						"latitude": 51.0911,
+						"longitude": 4.3663
 					},
-					"start_time": "2023-12-16T22:00:00Z",
-					"end_time": "2023-12-17T04:00:00Z",
-					"date": "2023-12-16",
+					"start_time": "2023-07-21 12:00",
+					"end_time": "2023-07-24 23:59",
+					"date": "2023-07-21",
 					"marker": null
 				},
 				{
-					"name": "Party K",
+					"name": "Sziget Festival",
 					"coordinates": {
-						"latitude": -23.5505,
-						"longitude": -46.6333
+						"latitude": 47.5181,
+						"longitude": 19.0736
 					},
-					"start_time": "2023-06-05T22:00:00Z",
-					"end_time": "2023-06-06T04:00:00Z",
-					"date": "2023-06-05",
+					"start_time": "2023-08-09 14:00",
+					"end_time": "2023-08-16 04:00",
+					"date": "2023-08-09",
 					"marker": null
 				},
 				{
-					"name": "Party L",
+					"name": "Ozora Festival",
 					"coordinates": {
-						"latitude": -33.4489,
-						"longitude": -70.6693
+						"latitude": 46.6694,
+						"longitude": 18.3315
 					},
-					"start_time": "2023-06-15T21:30:00Z",
-					"end_time": "2023-06-16T03:30:00Z",
-					"date": "2023-06-15",
+					"start_time": "2023-08-16 18:00",
+					"end_time": "2023-08-22 12:00",
+					"date": "2023-08-16",
 					"marker": null
 				},
 				{
-					"name": "Party M",
+					"name": "Ultra Europe",
 					"coordinates": {
-						"latitude": 45.4215,
-						"longitude": -75.6972
+						"latitude": 43.5115,
+						"longitude": 16.4467
 					},
-					"start_time": "2023-07-10T20:00:00Z",
-					"end_time": "2023-07-11T02:00:00Z",
-					"date": "2023-07-10",
+					"start_time": "2023-07-14 16:00",
+					"end_time": "2023-07-16 04:00",
+					"date": "2023-07-14",
 					"marker": null
 				},
 				{
-					"name": "Party N",
+					"name": "EXIT Festival",
 					"coordinates": {
-						"latitude": -12.0464,
-						"longitude": -77.0428
+						"latitude": 45.2539,
+						"longitude": 19.8447
 					},
-					"start_time": "2023-08-18T22:30:00Z",
-					"end_time": "2023-08-19T04:30:00Z",
+					"start_time": "2023-07-06 19:00",
+					"end_time": "2023-07-09 05:00",
+					"date": "2023-07-06",
+					"marker": null
+				},
+
+				{
+					"name": "Rainbow Serpent Festival",
+					"coordinates": {
+						"latitude": -37.2546,
+						"longitude": 143.8299
+					},
+					"start_time": "2023-01-27 16:00",
+					"end_time": "2023-01-30 12:00",
+					"date": "2023-01-27",
+					"marker": null
+				},
+				{
+					"name": "Earth Frequency Festival",
+					"coordinates": {
+						"latitude": -27.4556,
+						"longitude": 152.8114
+					},
+					"start_time": "2023-02-17 18:30",
+					"end_time": "2023-02-20 03:00",
+					"date": "2023-02-17",
+					"marker": null
+				},
+				{
+					"name": "Strawberry Fields Festival",
+					"coordinates": {
+						"latitude": -36.4174,
+						"longitude": 145.5731
+					},
+					"start_time": "2023-11-17 17:00",
+					"end_time": "2023-11-20 02:00",
+					"date": "2023-11-17",
+					"marker": null
+				},
+				{
+					"name": "Splendour in the Grass",
+					"coordinates": {
+						"latitude": -28.3852,
+						"longitude": 153.5509
+					},
+					"start_time": "2023-07-21 19:30",
+					"end_time": "2023-07-24 03:30",
+					"date": "2023-07-21",
+					"marker": null
+				},
+				{
+					"name": "Lost Paradise",
+					"coordinates": {
+						"latitude": -33.3129,
+						"longitude": 150.5050
+					},
+					"start_time": "2023-12-29 20:00",
+					"end_time": "2024-01-01 06:00",
+					"date": "2023-12-29",
+					"marker": null
+				},
+
+				{
+					"name": "Eclipse Festival",
+					"coordinates": {
+						"latitude": 45.5017,
+						"longitude": -73.5673
+					},
+					"start_time": "2023-07-29 18:00",
+					"end_time": "2023-08-02 12:00",
+					"date": "2023-07-29",
+					"marker": null
+				},
+				{
+					"name": "Shambhala Music Festival",
+					"coordinates": {
+						"latitude": 49.4994,
+						"longitude": -117.6654
+					},
+					"start_time": "2023-08-09 20:00",
+					"end_time": "2023-08-14 02:00",
+					"date": "2023-08-09",
+					"marker": null
+				},
+				{
+					"name": "Bass Coast Festival",
+					"coordinates": {
+						"latitude": 50.1214,
+						"longitude": -122.9543
+					},
+					"start_time": "2023-08-18 17:30",
+					"end_time": "2023-08-21 03:30",
 					"date": "2023-08-18",
 					"marker": null
 				},
 				{
-					"name": "Party O",
+					"name": "Ever After Music Festival",
 					"coordinates": {
-						"latitude": 43.6511,
+						"latitude": 43.4120,
+						"longitude": -80.4778
+					},
+					"start_time": "2023-09-01 16:00",
+					"end_time": "2023-09-04 01:00",
+					"date": "2023-09-01",
+					"marker": null
+				},
+				{
+					"name": "Bestival Toronto",
+					"coordinates": {
+						"latitude": 43.6532,
 						"longitude": -79.3832
 					},
-					"start_time": "2023-09-25T19:00:00Z",
-					"end_time": "2023-09-26T01:00:00Z",
-					"date": "2023-09-25",
+					"start_time": "2023-09-09 19:30",
+					"end_time": "2023-09-10 03:30",
+					"date": "2023-09-09",
 					"marker": null
 				}
 			]
@@ -566,9 +749,9 @@
 		}
 
 		function getColor(duration) {
-			if (duration <= 6) {
+			if (duration <= 24) {
 				return 'green';
-			} else if (duration <= 9) {
+			} else if (duration <= 48) {
 				return 'orange';
 			} else {
 				return 'red';
