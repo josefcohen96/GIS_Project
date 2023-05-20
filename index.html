@@ -33,7 +33,6 @@
 
 <body>
 	<div id="map"></div>
-
 	<div id="mapWindow">
 		<div id="menu">
 			<h3>Search Events</h3>
@@ -415,6 +414,7 @@
 				const marker = L.marker([party.coordinates.latitude, party.coordinates.longitude]).addTo(map);
 				const startTime = new Date(party.start_time).toLocaleTimeString([], { timeStyle: 'short' });
 				const endTime = new Date(party.end_time).toLocaleTimeString([], { timeStyle: 'short' });
+
 				marker.bindPopup(`<b>${party.name}</b><br>${party.date}<br>${startTime} - ${endTime}`);
 				marker.on('click', () => {
 					map.setView(marker.getLatLng(), 8);
@@ -474,7 +474,10 @@
 			// Add markers for filtered parties
 			filteredParties.forEach(party => {
 				let marker = L.marker([party.coordinates.latitude, party.coordinates.longitude]).addTo(map);
-				marker.bindPopup(`<b>${party.name}</b><br>${party.start_time} - ${party.end_time}`);
+				const startTime = new Date(party.start_time).toLocaleTimeString([], { timeStyle: 'short' });
+				const endTime = new Date(party.end_time).toLocaleTimeString([], { timeStyle: 'short' });
+
+				marker.bindPopup(`<b>${party.name}</b><br>${party.date}<br>${startTime} - ${endTime}`);
 			});
 		}
 
