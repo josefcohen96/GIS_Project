@@ -534,15 +534,11 @@
 						shadowSize: [41, 41]
 					})
 				});
-				marker.on('click', function () {
-					// Perform the desired action when the marker is clicked
-				});
 
 				const duration = (new Date(party.end_time) - new Date(party.start_time)) / 3600000; // Duration in hours
 				const color = getColor(duration);
 
 				party.marker = marker; // Assign the marker to the party object
-
 				marker.addTo(map)
 					.bindPopup(`<b>${party.name}</b><br>${party.start_time} - ${party.end_time}`)
 					.setIcon(L.icon({
@@ -552,8 +548,13 @@
 						popupAnchor: [1, -34],
 						shadowSize: [41, 41]
 					}));
+
+				marker.addEventListener('click', function () {
+					map.setView(marker.getLatLng(), 13); // Adjust the zoom level as needed
+				});
 			});
 		}
+
 		function removeTemporaryMarker() {
 			// Check if the temporary marker exists
 			if (temporaryMarker) {
@@ -563,6 +564,7 @@
 				temporaryMarker = null;
 			}
 		}
+
 		function getColor(duration) {
 			if (duration <= 6) {
 				return 'green';
@@ -598,6 +600,7 @@
 
 			displayParties(filteredParties);
 		}
+
 		function getCurrentLocation() {
 			if ("geolocation" in navigator) {
 				navigator.geolocation.getCurrentPosition(
@@ -648,10 +651,8 @@
 				const color = getColor(duration);
 
 				party.marker = marker; // Assign the marker to the party object
-
 				marker.addTo(map)
-					.bindPopup(`<h3>${party.name}</h3><p>Date: ${party.date}</p><p>Start Time: ${party.start_time}</p><p>End Time: ${party.end_time}</p>
-      `)
+					.bindPopup(`<h3>${party.name}</h3><p>Date: ${party.date}</p><p>Start Time: ${party.start_time}</p><p>End Time: ${party.end_time}</p>`)
 					.setIcon(L.icon({
 						iconUrl: `https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
 						iconSize: [25, 41],
