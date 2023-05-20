@@ -437,15 +437,11 @@
 				maxZoom: 18
 			});
 
-			const outdoorsTileLayer = L.tileLayer('https://{s}.tile.stamen.com/outdoors/{z}/{x}/{y}.png', {
-				attribution: 'Map data © <a href="https://stamen.com">Stamen Design</a>',
-				maxZoom: 18
-			});
+
 
 			const baseLayers = {
 				"Street": streetTileLayer,
 				"Satellite": satelliteTileLayer,
-				"Outdoors": outdoorsTileLayer
 			};
 
 			streetTileLayer.addTo(map);
